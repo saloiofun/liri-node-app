@@ -37,9 +37,26 @@ var params = {
 var twitter = function() {
 	twitterClient.get('statuses/user_timeline', params, function(error, tweets, response) {
 		if(error) throw error;
+
+		// Log the output into log.txt.
+		fs.appendFile("log.txt", "\r\n >>> my-tweets\r\n", 'utf8', function(err) {
+			if (err) {
+				return console.log(err);
+			}
+		});
+
 		for (var i = 0; i < tweets.length; i++) {
-			console.log("\n * Tweet: " + tweets[i].text);
-			console.log(" * Tweet created at: " + tweets[i].created_at + "\n");
+			var output = 
+			"\r\n * Tweet: " + tweets[i].text + 
+			"\r\n * Tweet created at: " + tweets[i].created_at + "\r\n";
+
+			console.log(output);
+
+			fs.appendFile("log.txt", output, 'utf8', function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
 		}
 	});
 }
@@ -53,12 +70,30 @@ var spotify = function(music) {
 	.then(function(response) {
 		if (response.tracks.items.length) {
 			// console.log(JSON.stringify(response, null, 3));
-			console.log("\n * Artist(s): " + response.tracks.items[0].artists[0].name);
-			console.log(" * Song: " + response.tracks.items[0].name);
-			console.log(" * Preview Link: " + response.tracks.items[0].preview_url);
-			console.log(" * Album: " + response.tracks.items[0].album.name + "\n");
+			var track = response.tracks.items[0];
+			var output =
+			"\r\n * Artist(s): " + track.artists[0].name + "\r\n" +
+			" * Song: " + track.name + "\r\n" +
+			" * Preview Link: " + track.preview_url + "\r\n" +
+			" * Album: " + track.album.name + "\r\n";
+
+			console.log(output);
+
+			// Log the output into log.txt.
+			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n" + output, 'utf8', function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
+
 		} else {
 			console.log("\n * Track not found!")
+			// Log the output into log.txt.
+			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n * Track not found!", 'utf8', function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
 		}
 	})
 	.catch(function(err) {
@@ -74,17 +109,32 @@ var omdb = function(movie) {
 	var queryUrl = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=" + process.env.OMDB_API_KEY;
 	Request(queryUrl, function(error, response, body) {
 		if (!error && response.statusCode === 200 && JSON.parse(body).Response === "True") {
-			console.log("\n OMDB URL: " + queryUrl + "\n");
-			console.log(" * Title of the movie: " + JSON.parse(body).Title);
-			console.log(" * Year the movie came out: " + JSON.parse(body).Year);
-			console.log(" * IMDB Rating of the movie: " + JSON.parse(body).imdbRating);
-			console.log(" * Rotten Tomatoes Rating of the movie: " + JSON.parse(body).Ratings[1].Value);
-			console.log(" * Country where the movie was produced: " + JSON.parse(body).Country);
-			console.log(" * Language of the movie: " + JSON.parse(body).Language);
-			console.log(" * Plot of the movie: " + JSON.parse(body).Plot);
-			console.log(" * Actors in the movie: " + JSON.parse(body).Actors);
+			var output = 
+			"\r\n * Title of the movie: " + JSON.parse(body).Title + "\r\n" +
+			" * Year the movie came out: " + JSON.parse(body).Year + "\r\n" +
+			" * IMDB Rating of the movie: " + JSON.parse(body).imdbRating + "\r\n" +
+			" * Rotten Tomatoes Rating of the movie: " + JSON.parse(body).Ratings[1].Value + "\r\n" +
+			" * Country where the movie was produced: " + JSON.parse(body).Country + "\r\n" +
+			" * Language of the movie: " + JSON.parse(body).Language + "\r\n" +
+			" * Plot of the movie: " + JSON.parse(body).Plot + "\r\n" +
+			" * Actors in the movie: " + JSON.parse(body).Actors + "\r\n";
+
+			console.log(output);
+
+			// Log the output into log.txt.
+			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n" + output, 'utf8', function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
 		} else {
 			console.log(" * Movie not found!");
+			// Log the output into log.txt.
+			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n * Movie not found!", 'utf8', function(err) {
+				if (err) {
+					return console.log(err);
+				}
+			});
 		}
 	});
 }
@@ -95,6 +145,12 @@ var file = function() {
 		if (err) {
 			return console.log(err);
 		}
+		// Log the output into log.txt.
+		fs.appendFile("log.txt", "\r\n >>> do-what-it-says", 'utf8', function(err) {
+			if (err) {
+				return console.log(err);
+			}
+		});
 		data = data.split(",");
 		runLiri(data[0],data[1]);
 	});	
