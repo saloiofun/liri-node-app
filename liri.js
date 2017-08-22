@@ -80,7 +80,7 @@ var spotify = function(music) {
 			console.log(output);
 
 			// Log the output into log.txt.
-			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n" + output, 'utf8', function(err) {
+			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n" + output, function(err) {
 				if (err) {
 					return console.log(err);
 				}
@@ -89,7 +89,7 @@ var spotify = function(music) {
 		} else {
 			console.log("\n * Track not found!")
 			// Log the output into log.txt.
-			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n * Track not found!", 'utf8', function(err) {
+			fs.appendFile("log.txt", "\r\n >>> spotify-this-song " + music + "\r\n * Track not found!", function(err) {
 				if (err) {
 					return console.log(err);
 				}
@@ -122,7 +122,7 @@ var omdb = function(movie) {
 			console.log(output);
 
 			// Log the output into log.txt.
-			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n" + output, 'utf8', function(err) {
+			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n" + output, function(err) {
 				if (err) {
 					return console.log(err);
 				}
@@ -130,7 +130,7 @@ var omdb = function(movie) {
 		} else {
 			console.log(" * Movie not found!");
 			// Log the output into log.txt.
-			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n * Movie not found!", 'utf8', function(err) {
+			fs.appendFile("log.txt", "\r\n >>> movie-this " + movie + "\r\n * Movie not found!", function(err) {
 				if (err) {
 					return console.log(err);
 				}
@@ -146,7 +146,7 @@ var file = function() {
 			return console.log(err);
 		}
 		// Log the output into log.txt.
-		fs.appendFile("log.txt", "\r\n >>> do-what-it-says", 'utf8', function(err) {
+		fs.appendFile("log.txt", "\r\n >>> do-what-it-says", function(err) {
 			if (err) {
 				return console.log(err);
 			}
